@@ -1,0 +1,4 @@
+numpy
+aioconsole
+
+git+https://github.com/friedkeenan/pak.py
