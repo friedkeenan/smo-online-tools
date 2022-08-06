@@ -77,6 +77,11 @@ class CappyInfoPacket(Packet):
     visible:   pak.Bool
     anim_name: pak.StaticString(0x30)
 
+    # There is some alignment padding
+    # at the end of the packet due to
+    # a bug in the vanilla client.
+    _alignment_padding: pak.Padding[3]
+
 class GameInfoPacket(Packet):
     id = 4
 
