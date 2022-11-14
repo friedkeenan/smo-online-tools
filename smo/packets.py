@@ -75,7 +75,7 @@ class CappyInfoPacket(Packet):
     position:  types.Vector3f
     rotation:  types.Quatf
     visible:   pak.Bool
-    anim_name: pak.StaticString(0x30)
+    anim_name: pak.StaticTerminatedString(0x30)
 
     # There is some alignment padding
     # at the end of the packet due to
@@ -87,7 +87,7 @@ class GameInfoPacket(Packet):
 
     is_2d:        pak.Bool
     scenario_num: pak.UInt8
-    stage_name:   pak.StaticString(0x40)
+    stage_name:   pak.StaticTerminatedString(0x40)
 
 class TagInfoPacket(Packet):
     id = 5
@@ -109,7 +109,7 @@ class PlayerConnectPacket(Packet):
 
     type:        pak.Enum(pak.Int32, enums.ConnectionType)
     max_players: pak.Defaulted(pak.UInt16, 0xFFFF)
-    name:        pak.StaticString(0x20)
+    name:        pak.StaticTerminatedString(0x20)
 
 class PlayerDisconnectPacket(Packet):
     id = 7
@@ -117,8 +117,8 @@ class PlayerDisconnectPacket(Packet):
 class CostumeInfoPacket(Packet):
     id = 8
 
-    body_model: pak.StaticString(0x20)
-    cap_model:  pak.StaticString(0x20)
+    body_model: pak.StaticTerminatedString(0x20)
+    cap_model:  pak.StaticTerminatedString(0x20)
 
 class ShineCollectPacket(Packet):
     id = 9
@@ -129,17 +129,17 @@ class ShineCollectPacket(Packet):
 class CaptureInfoPacket(Packet):
     id = 10
 
-    name: pak.StaticString(0x20)
+    name: pak.StaticTerminatedString(0x20)
 
 class ChangeStagePacket(Packet):
     id = 11
 
-    change_stage:      pak.StaticString(0x30)
-    change_id:         pak.StaticString(0x10)
+    change_stage:      pak.StaticTerminatedString(0x30)
+    change_id:         pak.StaticTerminatedString(0x10)
     scenario_num:      pak.Int8
     sub_scenario_type: pak.UInt8
 
 class ServerCommandPacket(Packet):
     id = 12
 
-    command: pak.StaticString(0x30)
+    command: pak.StaticTerminatedString(0x30)
