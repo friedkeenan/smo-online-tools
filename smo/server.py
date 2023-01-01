@@ -85,9 +85,9 @@ class Server(pak.AsyncPacketHandler):
         await self.wait_closed()
 
     async def _listen_to_packet(self, client, packet):
-        async with self.listener_task_context(listen_sequentially=not client.connected):
+        async with self.listener_task_group(listen_sequentially=not client.connected) as group:
             for listener in self.listeners_for_packet(packet):
-                self.create_listener_task(listener(client, packet))
+                group.create_task(listener(client, packet))
 
     async def listen(self, client):
         while self.is_serving() and not client.is_closing():

@@ -33,9 +33,9 @@ class Client(Connection, pak.AsyncPacketHandler):
         await self._listen_to_packet(packet, outgoing=True)
 
     async def _listen_to_packet(self, packet, *, outgoing):
-        async with self.listener_task_context(listen_sequentially=self._listen_sequentially):
+        async with self.listener_task_group(listen_sequentially=self._listen_sequentially) as group:
             for listener in self.listeners_for_packet(packet, outgoing=outgoing):
-                self.create_listener_task(listener(packet))
+                group.create_task(listener(packet))
 
     async def listen(self):
         try:

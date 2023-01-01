@@ -95,7 +95,7 @@ class Proxy(pak.AsyncPacketHandler):
         await self.wait_closed()
 
     async def _listen_to_packet(self, source_conn, packet):
-        async with self.listener_task_context(listen_sequentially=False):
+        async with self.listener_task_group(listen_sequentially=False) as group:
             listeners = self.listeners_for_packet(packet)
             async def proxy_wrapper():
                 results = await asyncio.gather(*[listener(source_conn, packet) for listener in listeners])
@@ -103,7 +103,7 @@ class Proxy(pak.AsyncPacketHandler):
                 if False not in results:
                     await source_conn.destination.write_packet_instance(packet)
 
-            self.create_listener_task(proxy_wrapper())
+            group.create_task(proxy_wrapper())
 
     async def _listen_impl(self, source_conn):
         while self.is_serving() and not source_conn.is_closing():
